@@ -17,7 +17,7 @@ public class Connections {
      //static String userName = "sa";
      //static String passWord = "sa";
      //static String url = "jdbc:sqlserver://localhost:1433;databaseName=ca";
-     static String dbUrl="jdbc:odbc:Driver={SQL Server};Server=CAO_KY\\SQLEXPRESS;Database=caro;UserName=sa;Password=sa";
+     static String dbUrl="jdbc:odbc:Driver={SQL Server};Server=IT\\SQLEXPRESS;Database=Caro;UserName=sa;Password=bug!@123";
      
      public static Connection Newconnect(){
         Connection con = null;
