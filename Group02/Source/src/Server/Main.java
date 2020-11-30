@@ -6,6 +6,7 @@ package Server;
 
 import Common.Room;
 import Common.Users;
+import Cryptography.PublicCryptography;
 import Database.DataFunc;
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -30,6 +31,8 @@ public class Main extends javax.swing.JFrame {
     static java.util.List<Users> uslist = new ArrayList<Users>();
     
     static DataFunc df = new DataFunc();
+    
+    public static PublicCryptography pct = new PublicCryptography();
     /**
      * Creates new form Main
      */

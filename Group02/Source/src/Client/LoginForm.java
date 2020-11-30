@@ -9,8 +9,10 @@ import Common.Users;
 import java.io.IOException;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.security.PublicKey;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.crypto.SealedObject;
 import javax.swing.JOptionPane;
 
 /**
@@ -25,7 +27,6 @@ public class LoginForm extends javax.swing.JFrame implements inReceiveMessage{
     static public Socket socket = null;
     
     ListenServer listenServer = null;
-    
     /**
      * Creates new form Main
      */
@@ -261,7 +262,7 @@ public class LoginForm extends javax.swing.JFrame implements inReceiveMessage{
         String password;        
         
         connectServer();
-                
+        //kiểm tra tài khoản password
         username = tx_username.getText();
         password = String.valueOf(tx_password.getPassword());
         
@@ -417,6 +418,11 @@ public class LoginForm extends javax.swing.JFrame implements inReceiveMessage{
                 JOptionPane.showMessageDialog(null, msg.getObject(), "Message", 1);
                 break;
             }
+            //nhận publickey từ server
+//            case 101: {
+//                svKey = (PublicKey) msg.getObject();
+//                break;
+//            }
 
         }
 

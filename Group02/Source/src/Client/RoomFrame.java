@@ -6,10 +6,12 @@ package Client;
 
 import Common.KMessage;
 import Common.Room;
+import Common.Users;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.crypto.SealedObject;
 import javax.swing.JOptionPane;
 
 /**
@@ -48,6 +50,8 @@ public class RoomFrame extends javax.swing.JFrame implements inReceiveMessage{
         btnJoinRoom = new javax.swing.JButton();
         lstRoom = new java.awt.List();
         btnViewRoom = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -72,6 +76,20 @@ public class RoomFrame extends javax.swing.JFrame implements inReceiveMessage{
             }
         });
 
+        jButton2.setText("ViewProfile");
+        jButton2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButton2MouseClicked(evt);
+            }
+        });
+
+        jButton3.setText("Ranking");
+        jButton3.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButton3MouseClicked(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -86,7 +104,11 @@ public class RoomFrame extends javax.swing.JFrame implements inReceiveMessage{
                 .addComponent(btnJoinRoom)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnViewRoom)
-                .addContainerGap(171, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jButton3)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -97,7 +119,9 @@ public class RoomFrame extends javax.swing.JFrame implements inReceiveMessage{
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1)
                     .addComponent(btnJoinRoom)
-                    .addComponent(btnViewRoom))
+                    .addComponent(btnViewRoom)
+                    .addComponent(jButton2)
+                    .addComponent(jButton3))
                 .addContainerGap(179, Short.MAX_VALUE))
         );
 
@@ -137,6 +161,24 @@ public class RoomFrame extends javax.swing.JFrame implements inReceiveMessage{
         }
     }//GEN-LAST:event_btnViewRoomMouseClicked
 
+    private void jButton2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton2MouseClicked
+        java.awt.EventQueue.invokeLater(new Runnable() {
+                    public void run() {
+                        new Profile(listenServer).setVisible(true);
+                    }
+                });
+                this.dispose();
+    }//GEN-LAST:event_jButton2MouseClicked
+
+    private void jButton3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton3MouseClicked
+        // TODO add your handling code here:
+        try{
+            listenServer.SendMessage(2,null);
+        }catch(Exception e){
+            
+        }    
+    }//GEN-LAST:event_jButton3MouseClicked
+
     /**
      * @param args the command line arguments
      */
@@ -175,12 +217,28 @@ public class RoomFrame extends javax.swing.JFrame implements inReceiveMessage{
     private javax.swing.JButton btnJoinRoom;
     private javax.swing.JButton btnViewRoom;
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
     private java.awt.List lstRoom;
     // End of variables declaration//GEN-END:variables
 
     @Override
     public void ReceiveMessage(KMessage msg) throws IOException {
+        System.out.println(msg.getType());
         switch (msg.getType()) {
+            case 2:{
+                java.awt.EventQueue.invokeLater(new Runnable() {
+                    public void run() {
+                        try {
+                            new Ranking(listenServer, (ArrayList<Users>) msg.getObject()).setVisible(true);
+                        } catch (IOException ex) {
+                            Logger.getLogger(RoomFrame.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    }
+                });
+                this.dispose();
+                break;
+            }
             case 20: // get ban co
             {
                 java.awt.EventQueue.invokeLater(new Runnable() {

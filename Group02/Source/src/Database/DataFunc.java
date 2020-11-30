@@ -56,6 +56,32 @@ public class DataFunc {
         return null;
     }
     
+    public List<Users> getTop10User(){
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        try{
+            stm = con.prepareStatement("select top 10 * from Users where (win+lose) > 10  order by score desc");
+            rs = stm.executeQuery();
+            
+            List<Users> uslist = new ArrayList<Users>();
+            
+            while(rs.next()){
+                Users us = new Users();
+                us.setId(rs.getInt("Id"));
+                us.setUsername(rs.getString("username"));
+                us.setPassword(rs.getString("password"));
+                us.setWin(rs.getInt("win"));
+                us.setLose(rs.getInt("lose"));
+                us.setScore(rs.getInt("score"));
+                uslist.add(us);
+            }
+            return uslist;
+        }catch(SQLException ex){
+            
+        }
+        return null;
+    }
+    
     public Users checkLogin(String username, String password) {
         try {
                     

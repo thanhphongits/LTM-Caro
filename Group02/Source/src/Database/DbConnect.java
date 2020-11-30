@@ -21,11 +21,11 @@ public class DbConnect {
 
     public boolean checkLogin(String username, String password) {
         try {
-            String url = "sun.jdbc.odbc.JdbcOdbcDriver";
+           
 
-            Class.forName(url);
+             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
 //Data Source=CAO_KY\SQLEXPRESS;Initial Catalog=MonNgonVenDuong;Integrated Security=True
-            String dbUrl = "jdbc:odbc:Driver={SQL Server};Server=CAO_KY\\SQLEXPRESS;Database=QuanLyKhachHang;UserName=cao_ky;Password=";
+            String dbUrl = "jdbc:sqlserver://localhost:1433;DatabaseName=caro;instance=MSSQLSERVER2019;user=sa;password=123456";
 
             Connection con = DriverManager.getConnection(dbUrl);
             String sql = "Select * From Registration Where username = ? and password = ?";

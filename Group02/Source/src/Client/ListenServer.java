@@ -14,6 +14,10 @@ import java.io.OutputStream;
 import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import Cryptography.PublicCryptography;
+import Cryptography.SymmetricEncryption;
+import java.security.PublicKey;
+import javax.crypto.SealedObject;
 
 /**
  *
@@ -30,22 +34,50 @@ class ListenServer extends Thread {
         
         public inReceiveMessage receive;
         
+        public PublicKey svPubKey;
+        
+        public SymmetricEncryption se;
+        
         ListenServer(Socket socket) throws IOException {
             this.socket = socket;
+            se = new SymmetricEncryption();
             outputStream = socket.getOutputStream();
             objectOutputStream = new ObjectOutputStream(outputStream);
             inputStream = socket.getInputStream();
             objectInputStream = new ObjectInputStream(inputStream);
-
+            //nhận public key từ server qua client
+            receivePubKey();
+            //gửi public key từ client qua server
+            SendKey();
+        }
+        //hàm gửi public key của client cho server
+        void SendKey() throws IOException
+        {
+            String clientKey = se.toString();
+            String msg = PublicCryptography.Encrypt(clientKey, svPubKey);
+            System.out.println(se.getIV());
+            objectOutputStream.reset();
+            objectOutputStream.writeUTF(msg);
+            objectOutputStream.reset();
+            objectOutputStream.write(se.getIV());
+        }
+        
+        void receivePubKey(){
+            try{
+                svPubKey = (PublicKey)objectInputStream.readObject();
+            }catch(Exception e){
+                e.printStackTrace();
+            }
         }
 
         @Override
         public void run() {
             do {
                 try {
-                    Object o = objectInputStream.readObject();
-                    if (o != null && receive!=null) {
-                        receive.ReceiveMessage((KMessage) o);
+                    SealedObject o = (SealedObject) objectInputStream.readObject();
+                    KMessage msg = (KMessage)se.Decrypt(o);
+                    if (msg != null && receive!=null) {
+                        receive.ReceiveMessage(msg);
                     }
 
                 } catch (IOException e) {
@@ -54,7 +86,6 @@ class ListenServer extends Thread {
                     
                 }
             }while (true);
-    
         }
 
         public void SendMessage(int ty, Object obj) throws IOException {
@@ -63,8 +94,9 @@ class ListenServer extends Thread {
         }
         
         public void SendMessage(KMessage msg) throws IOException {
+            SealedObject sealedmsg = se.Encrypt(msg);
             objectOutputStream.reset();
-            objectOutputStream.writeObject(msg);
+            objectOutputStream.writeObject(sealedmsg);
         }
     }
     
