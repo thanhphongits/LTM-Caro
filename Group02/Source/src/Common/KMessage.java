@@ -29,9 +29,9 @@ public class KMessage implements Serializable{
     /**
      * @param type the type to set
      */
-    public void setType(int type) {
-        this.type = type;
-    }
+//    public void setType(int type) {
+//        this.type = type;
+//    }
 
     /**
      * @return the object

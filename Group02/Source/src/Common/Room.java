@@ -214,11 +214,10 @@ public class Room implements Serializable{
         }
         return false;
     }
-    
     public void clientExit(ClientHandler clientHandler) throws IOException
     {
         if (countAvailable()==1)
-        {
+        {                                                                
             if (client1!=null)
                 client1.room = null;
             client1 = null;

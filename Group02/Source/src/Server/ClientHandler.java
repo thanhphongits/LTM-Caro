@@ -4,12 +4,11 @@
  */
 package Server;
 
-import static Client.LoginForm.socket;
-import static Client.LoginForm.user;
 import Common.GPos;
 import Common.KMessage;
 import Common.Room;
 import Common.Users;
+import Cryptography.PublicCryptography;
 import Database.DataFunc;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -17,7 +16,12 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JOptionPane;
+import java.security.PublicKey;
+import Cryptography.SymmetricEncryption;
+import java.util.Base64;
+import javax.crypto.SealedObject;
+import javax.crypto.SecretKey;
+import javax.crypto.spec.SecretKeySpec;
 
 /**
  *
@@ -34,28 +38,44 @@ public class ClientHandler extends Thread {
         
         Boolean execute = true;
         
+        private SymmetricEncryption clientKey;
+        
         ClientHandler(Socket socket) throws IOException {
             this.socket = socket;
             inputStream = new ObjectInputStream(socket.getInputStream());
             outputStream = new ObjectOutputStream(socket.getOutputStream());
-            
+            //gửi public key của server cho client
+            SendPubKey();
+            //nhận public key từ client cho server
+            ReceiveClientKey();
             execute = true;
         }
-
-        void Send(String strSend) throws IOException
-        {
-            //Users temp = new Users(1, strSend, "123456", 100);
-            //outputStream.writeObject(temp);
-        }
         
-        void Guilai() throws IOException, InterruptedException {
-            //Users temp = new Users(1, "Server gui lai", "123456", 100);
-            //outputStream.writeObject(temp);
-            //Thread.sleep(1000);
+        //hàm gửi public key của server cho client
+        void SendPubKey() throws IOException
+        {
+            outputStream.reset();
+            outputStream.writeObject(Main.pct.getPublicKey());
+        }
+        //nhận public key từ client gửi cho server
+        void ReceiveClientKey() {
+            try{
+                String CliKey = inputStream.readUTF();
+                CliKey = PublicCryptography.Decrypt(CliKey);
+                byte[] iv = inputStream.readAllBytes();
+                byte[] decodedKey = Base64.getDecoder().decode(CliKey);
+                SecretKey originalKey = new SecretKeySpec(decodedKey, 0, decodedKey.length, "AES"); 
+                
+                System.out.println(iv);
+                clientKey = new SymmetricEncryption(originalKey,iv);
+                //System.out.println(clientKey.getKey().toString());
+            }catch(Exception e){
+                e.printStackTrace();
+            }
         }
 
         void ReceiveMessage(KMessage msg) throws IOException {
-            
+            System.out.println(msg.getType());
             switch (msg.getType()) {
                 case 0: {
                     Users temp = (Users)msg.getObject();
@@ -93,6 +113,11 @@ public class ClientHandler extends Thread {
                         SendMessage(1, "Register succesfull");
                     }
                     
+                    break;
+                }
+                case 2: {
+                    DataFunc df = new DataFunc();
+                    SendMessage(2, df.getTop10User());
                     break;
                 }
                 case 10: //chuyen de chat chit
@@ -189,6 +214,14 @@ public class ClientHandler extends Thread {
                     SendMessage(20, null);
                     break;
                 }
+                //gửi và nhận publickey từ client
+//                case 101:
+//                {
+//                    SendMessage(101, Main.serverKey.getPublicKey());
+//                    this.cliPubKey = (PublicKey)msg.getObject();
+//                    System.out.println(this.cliPubKey);
+//                    break;
+//                }
             }
         }
 
@@ -198,8 +231,9 @@ public class ClientHandler extends Thread {
         }
                 
         public void SendMessage(KMessage msg) throws IOException {
+            SealedObject sealedmsg = clientKey.Encrypt(msg);
             outputStream.reset();
-            outputStream.writeObject(msg);
+            outputStream.writeObject(sealedmsg);
         }
         
         public Boolean closeClient() throws Throwable
@@ -236,9 +270,15 @@ public class ClientHandler extends Thread {
             while (execute) {
                 
                 try {
-                    Object o = inputStream.readObject();
-                    if (o != null) {
-                        ReceiveMessage((KMessage)o);
+                    SealedObject o = (SealedObject) inputStream.readObject();
+                    KMessage msg = null;
+                    //for(ClientHandler cli : Main.lstClient){
+                      //  System.out.println(cli.clientKey.getIV());
+                        //if(cli.clientKey.canDecrypt(o))
+                        msg = clientKey.Decrypt(o);
+                    //}
+                    if (msg != null) {
+                        ReceiveMessage(msg);
                     }
                     //Guilai();
                 } catch (IOException e) {

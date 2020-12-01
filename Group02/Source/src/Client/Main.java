@@ -15,8 +15,10 @@ import java.awt.Graphics;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.crypto.SealedObject;
 import static javax.swing.JFrame.EXIT_ON_CLOSE;
 import javax.swing.JScrollPane;
+
 
 /**
  *
@@ -395,7 +397,8 @@ public class Main extends javax.swing.JFrame implements inReceiveMessage{
 
     
     @Override
-            public void ReceiveMessage(KMessage msg) throws IOException {
+        public void ReceiveMessage(KMessage msg) throws IOException {
+            System.out.println(msg.getType());
             switch (msg.getType()) {
                 case 30: // get ban co
                 {
