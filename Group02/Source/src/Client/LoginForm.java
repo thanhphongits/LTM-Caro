@@ -9,16 +9,12 @@ import Common.Users;
 import java.io.IOException;
 import java.net.Socket;
 import java.net.UnknownHostException;
-import java.security.PublicKey;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.crypto.SealedObject;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.swing.JOptionPane;
 
-/**
- *
- * @author Nhan Nguyen
- */
 public class LoginForm extends javax.swing.JFrame implements inReceiveMessage{
     
     static public Users user = null;
@@ -27,13 +23,13 @@ public class LoginForm extends javax.swing.JFrame implements inReceiveMessage{
     static public Socket socket = null;
     
     ListenServer listenServer = null;
+    
     /**
      * Creates new form Main
      */
     public LoginForm() {
         initComponents();
         setLocationRelativeTo(null);
-        
         bt_loginActionPerformed(null);
     }
 
@@ -114,6 +110,11 @@ public class LoginForm extends javax.swing.JFrame implements inReceiveMessage{
         jLabel7.setText("Re-Type Password:");
 
         bt_register1.setText("Register");
+        bt_register1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                bt_register1MouseClicked(evt);
+            }
+        });
         bt_register1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 bt_register1ActionPerformed(evt);
@@ -262,7 +263,7 @@ public class LoginForm extends javax.swing.JFrame implements inReceiveMessage{
         String password;        
         
         connectServer();
-        //kiểm tra tài khoản password
+                
         username = tx_username.getText();
         password = String.valueOf(tx_password.getPassword());
         
@@ -271,8 +272,6 @@ public class LoginForm extends javax.swing.JFrame implements inReceiveMessage{
             JOptionPane.showMessageDialog(null, "Some fields are empty", "Error", 1);
             return;
         }
-        
-        
         
         if (listenServer!=null)
         {
@@ -289,6 +288,7 @@ public class LoginForm extends javax.swing.JFrame implements inReceiveMessage{
 
     private void bt_registerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_registerActionPerformed
         // TODO add your handling code here:
+        
 
     }//GEN-LAST:event_bt_registerActionPerformed
 
@@ -296,20 +296,33 @@ public class LoginForm extends javax.swing.JFrame implements inReceiveMessage{
         // TODO add your handling code here:
         if (evt.getKeyChar()=='\n')
             bt_loginActionPerformed(null);
+           
     }//GEN-LAST:event_tx_passwordKeyPressed
 
     private void bt_register1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_register1ActionPerformed
-        // TODO add your handling code here:
+       // TODO add your handling code here:
         String username;
         String password;
         String repassword;
 
         connectServer();
         
-        username = tx_username1.getText();
-        password = String.valueOf(tx_password1.getPassword());
-        repassword = String.valueOf(tx_repassword1.getPassword());
-
+        username = tx_username1.getText();// lay du lieu text Nhap vao
+        password = String.valueOf(tx_password1.getPassword()); // Lay du lieu Password nhap vao
+        repassword = String.valueOf(tx_repassword1.getPassword());// Lay du lieu repassword
+        
+       
+       String regex = "^[a-zA-Z0-9]+@[a-zA-Z]+mail.com$";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(username);
+        
+       if(!matcher.find())
+       {
+            JOptionPane.showMessageDialog(null,"Username co dinh dang la Email.Vui long nhap lai", "Error", 1);
+            return ;
+       }
+        
+        
         if(username.compareTo("")==0 || password.compareTo("") == 0 && repassword.compareTo("") == 0)
         {
             JOptionPane.showMessageDialog(null, "Some fields are empty", "Error", 1);
@@ -329,7 +342,13 @@ public class LoginForm extends javax.swing.JFrame implements inReceiveMessage{
                 Logger.getLogger(LoginForm.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+
     }//GEN-LAST:event_bt_register1ActionPerformed
+
+    private void bt_register1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bt_register1MouseClicked
+        // TODO add your handling code here:
+      
+    }//GEN-LAST:event_bt_register1MouseClicked
 
     
     /**
@@ -418,11 +437,6 @@ public class LoginForm extends javax.swing.JFrame implements inReceiveMessage{
                 JOptionPane.showMessageDialog(null, msg.getObject(), "Message", 1);
                 break;
             }
-            //nhận publickey từ server
-//            case 101: {
-//                svKey = (PublicKey) msg.getObject();
-//                break;
-//            }
 
         }
 
