@@ -117,7 +117,7 @@ public class ClientHandler extends Thread {
                 }
                 case 2: {
                     DataFunc df = new DataFunc();
-                    SendMessage(2, df.getTop10User());
+                    SendMessage(2, df.getRankingUser());
                     break;
                 }
                 case 10: //chuyen de chat chit
@@ -287,9 +287,7 @@ public class ClientHandler extends Thread {
                     } catch (Throwable ex) {
                         Logger.getLogger(ClientHandler.class.getName()).log(Level.SEVERE, null, ex);
                     }
-                    e.printStackTrace();
                 } catch (ClassNotFoundException e) {
-                    e.printStackTrace();
                 }
 
             }

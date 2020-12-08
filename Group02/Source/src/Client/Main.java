@@ -13,11 +13,16 @@ import java.awt.Dimension;
 import java.awt.Event;
 import java.awt.Graphics;
 import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.util.TimerTask;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.crypto.SealedObject;
 import static javax.swing.JFrame.EXIT_ON_CLOSE;
+import javax.swing.JLabel;
 import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.Timer;
 
 
 /**
@@ -31,12 +36,19 @@ public class Main extends javax.swing.JFrame implements inReceiveMessage{
     
     JGoban Goban;
     JScrollPane jScroll;
-
+    ObjectOutputStream oos;// .........
+    static int interval;
+    static java.util.Timer timer;
+    Timer thoigian;
+    String temp = "", strNhan = "";
+    Integer second, minute;
+    JLabel demthoigian;
+    JTextArea content;
     int GameState = 0;
     static final int WAIT = 0;
     static final int MY_TURN = 1;
-    static final int YOU_WIN = 2;
-    static final int YOU_LOSE = 3;
+    static final int YOU_WIN = 3;
+    static final int YOU_LOSE = -1;
     /**
      * Creates new form Main
      */
@@ -156,6 +168,8 @@ public class Main extends javax.swing.JFrame implements inReceiveMessage{
         ChatHistory = new javax.swing.JTextArea();
         btnExitRoom = new javax.swing.JButton();
         panelCaro = new javax.swing.JScrollPane();
+        lbltime = new javax.swing.JLabel();
+        lblhienthi = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -201,6 +215,10 @@ public class Main extends javax.swing.JFrame implements inReceiveMessage{
             }
         });
 
+        lbltime.setText("Thời gian:");
+
+        lblhienthi.setText("600");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -216,7 +234,8 @@ public class Main extends javax.swing.JFrame implements inReceiveMessage{
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(txtChat, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtSendChat, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(txtSendChat, javax.swing.GroupLayout.DEFAULT_SIZE, 66, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
@@ -226,13 +245,17 @@ public class Main extends javax.swing.JFrame implements inReceiveMessage{
                                     .addComponent(lblScore1)
                                     .addComponent(lblName1)))
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel5)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(lblScore2)
-                                    .addComponent(lblName2))))
-                        .addGap(0, 107, Short.MAX_VALUE))
-                    .addComponent(jScrollPane1))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(lbltime)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLabel5)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(lblScore2)
+                                            .addComponent(lblName2))))
+                                .addGap(18, 18, 18)
+                                .addComponent(lblhienthi, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -255,6 +278,10 @@ public class Main extends javax.swing.JFrame implements inReceiveMessage{
                             .addComponent(lblName2))
                         .addGap(8, 8, 8)
                         .addComponent(lblScore2)
+                        .addGap(13, 13, 13)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(lbltime)
+                            .addComponent(lblhienthi))
                         .addGap(18, 18, 18)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -265,7 +292,7 @@ public class Main extends javax.swing.JFrame implements inReceiveMessage{
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lblStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(51, 51, 51)
-                .addComponent(btnExitRoom, javax.swing.GroupLayout.PREFERRED_SIZE, 24, Short.MAX_VALUE)
+                .addComponent(btnExitRoom, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -389,11 +416,38 @@ public class Main extends javax.swing.JFrame implements inReceiveMessage{
     private javax.swing.JLabel lblScore1;
     private javax.swing.JLabel lblScore2;
     private javax.swing.JLabel lblStatus;
+    private javax.swing.JLabel lblhienthi;
+    private javax.swing.JLabel lbltime;
     private javax.swing.JScrollPane panelCaro;
     private javax.swing.JTextField txtChat;
     private javax.swing.JButton txtSendChat;
     // End of variables declaration//GEN-END:variables
+    public void time() {
+        String secs = "599";
+        int delay = 1000;
+        int period = 1000;
+        timer = new java.util.Timer();
+        interval = Integer.parseInt(secs);
+        //System.out.println(secs);
+        timer.scheduleAtFixedRate(new TimerTask() {
 
+            public void run() {
+                lblhienthi.setText("" + setInterval());
+            }
+            
+            
+        }, delay, period);
+    }
+    public static void  skill(){
+                return;
+            }
+
+    private static final int setInterval() {
+        if (interval == 1) {
+            timer.cancel();
+        }
+        return --interval;
+    }
 
     
     @Override
@@ -423,10 +477,10 @@ public class Main extends javax.swing.JFrame implements inReceiveMessage{
                         lblName2.setText(arrUser[1].getUsername());
                         lblScore2.setText(""+arrUser[1].getScore());
                     }
-                    
+                    time();
                     break;
                 }
-                case 35:
+                case 35: // Thắng thua
                 {
                     if ("win".equalsIgnoreCase(msg.getObject().toString()))
                     {
@@ -441,7 +495,7 @@ public class Main extends javax.swing.JFrame implements inReceiveMessage{
                     //System.out.println(msg.getObject());
                     break;
                 }    
-                case 36:
+                case 36: // Đợi xíu rồi đánh tiếp
                 {
                     putStatus("Doi...");
 

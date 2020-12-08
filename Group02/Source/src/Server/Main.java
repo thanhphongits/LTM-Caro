@@ -176,15 +176,16 @@ public class Main extends javax.swing.JFrame {
         int indx = list.getSelectedIndex();
         if(indx == -1)
         {
-            JOptionPane.showMessageDialog(null, "Select user to delete, Please!", "Err", 1);
+            JOptionPane.showMessageDialog(null, "Select user to block, Please!", "Err", 1);
             return;
         }
         Users us;
         us = uslist.get(indx);
         try {
             df.DeleteUser(us.getId());
-            JOptionPane.showMessageDialog(null, "User "+ us.getId()+" was deleted!", "Success", 1);
+            JOptionPane.showMessageDialog(null, "User "+ us.getId()+" was block!", "Success", 1);
         } catch (SQLException ex) {
+             JOptionPane.showMessageDialog(null,"Blockl","Error", 1);
             Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
         }
 
@@ -199,7 +200,8 @@ public class Main extends javax.swing.JFrame {
                     + " | Password: " + users.getPassword() 
                     +" | Win:" +users.getWin()
                     +" | Lose:" +users.getLose()
-                    +" | Score:" +users.getScore());
+                    +" | Score:" +users.getScore()
+                    +" | TrangThai:" + users.getTrangThai());
         }                
     }//GEN-LAST:event_formWindowOpened
 

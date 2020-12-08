@@ -16,14 +16,16 @@ public class Users implements Serializable{
     private String username;
     private String password;
     private int win;
+    private int trangthai;
 
-    public Users(int Id, String username, String password, int win, int lose, int score) {
+    public Users(int Id, String username, String password, int win, int lose, int score,int trangthai) {
         this.Id = Id;
         this.username = username;
         this.password = password;
         this.win = win;
         this.lose = lose;
         this.score = score;
+        this.trangthai = trangthai;
     }
     private int lose;
 
@@ -64,6 +66,9 @@ public class Users implements Serializable{
     {
         return score;
     }
+    public int getTrangThai(){
+        return trangthai;
+    }
     public void setId(int id)
     {
         this.Id = id;
@@ -87,5 +92,8 @@ public class Users implements Serializable{
     public void setScore(int score)
     {
         this.score = score;
+    }
+    public void setTrangThai(int trangthai){
+        this.trangthai = trangthai;
     }
 }

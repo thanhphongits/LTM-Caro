@@ -28,7 +28,7 @@ public class DbConnect {
             String dbUrl = "jdbc:sqlserver://localhost:1433;DatabaseName=caro;instance=MSSQLSERVER2019;user=sa;password=123456";
 
             Connection con = DriverManager.getConnection(dbUrl);
-            String sql = "Select * From Registration Where username = ? and password = ?";
+            String sql = "Select * From Users Where username = ? and password = ?";
             PreparedStatement stm = con.prepareStatement(sql);
             stm.setString(1, username);
             stm.setString(2, password);

@@ -47,6 +47,7 @@ public class DataFunc {
                 us.setWin(rs.getInt("win"));
                 us.setLose(rs.getInt("lose"));
                 us.setScore(rs.getInt("score"));
+                us.setTrangThai(rs.getInt("trangthai"));
                 uslist.add(us);
             }
             return uslist;
@@ -56,7 +57,7 @@ public class DataFunc {
         return null;
     }
     
-    public List<Users> getTop10User(){
+    public List<Users> getRankingUser(){
         PreparedStatement stm = null;
         ResultSet rs = null;
         try{
@@ -73,6 +74,7 @@ public class DataFunc {
                 us.setWin(rs.getInt("win"));
                 us.setLose(rs.getInt("lose"));
                 us.setScore(rs.getInt("score"));
+                us.setTrangThai(rs.getInt("trangthai"));
                 uslist.add(us);
             }
             return uslist;
@@ -263,7 +265,7 @@ public class DataFunc {
     {
             PreparedStatement stm = null;
             
-            stm = con.prepareStatement("delete from Users Where Id = ?");
+            stm = con.prepareStatement("UPDATE Users SET trangthai=0 WHERE id =?");
             stm.setInt(1, Id);
                                  
             stm.execute();
