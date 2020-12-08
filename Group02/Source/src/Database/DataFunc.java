@@ -61,7 +61,7 @@ public class DataFunc {
         PreparedStatement stm = null;
         ResultSet rs = null;
         try{
-            stm = con.prepareStatement("select top 10 * from Users where (win+lose) > 10  order by score desc");
+            stm = con.prepareStatement("select * from Users where (win+lose) > 10  order by score desc");
             rs = stm.executeQuery();
             
             List<Users> uslist = new ArrayList<Users>();

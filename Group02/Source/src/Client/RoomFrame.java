@@ -51,7 +51,7 @@ public class RoomFrame extends javax.swing.JFrame implements inReceiveMessage{
         lstRoom = new java.awt.List();
         btnViewRoom = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        ButtonRanking = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -83,10 +83,10 @@ public class RoomFrame extends javax.swing.JFrame implements inReceiveMessage{
             }
         });
 
-        jButton3.setText("Ranking");
-        jButton3.addMouseListener(new java.awt.event.MouseAdapter() {
+        ButtonRanking.setText("Ranking");
+        ButtonRanking.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jButton3MouseClicked(evt);
+                ButtonRankingMouseClicked(evt);
             }
         });
 
@@ -107,7 +107,7 @@ public class RoomFrame extends javax.swing.JFrame implements inReceiveMessage{
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButton3)
+                .addComponent(ButtonRanking)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -121,7 +121,7 @@ public class RoomFrame extends javax.swing.JFrame implements inReceiveMessage{
                     .addComponent(btnJoinRoom)
                     .addComponent(btnViewRoom)
                     .addComponent(jButton2)
-                    .addComponent(jButton3))
+                    .addComponent(ButtonRanking))
                 .addContainerGap(179, Short.MAX_VALUE))
         );
 
@@ -170,14 +170,14 @@ public class RoomFrame extends javax.swing.JFrame implements inReceiveMessage{
                 this.dispose();
     }//GEN-LAST:event_jButton2MouseClicked
 
-    private void jButton3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton3MouseClicked
+    private void ButtonRankingMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ButtonRankingMouseClicked
         // TODO add your handling code here:
         try{
             listenServer.SendMessage(2,null);
         }catch(Exception e){
             
         }    
-    }//GEN-LAST:event_jButton3MouseClicked
+    }//GEN-LAST:event_ButtonRankingMouseClicked
 
     /**
      * @param args the command line arguments
@@ -214,11 +214,11 @@ public class RoomFrame extends javax.swing.JFrame implements inReceiveMessage{
 //        });
 //    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton ButtonRanking;
     private javax.swing.JButton btnJoinRoom;
     private javax.swing.JButton btnViewRoom;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
     private java.awt.List lstRoom;
     // End of variables declaration//GEN-END:variables
 

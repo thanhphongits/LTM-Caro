@@ -74,9 +74,11 @@ public class LoginForm extends javax.swing.JFrame implements inReceiveMessage{
 
         jLabel3.setText("Password:");
 
-        tx_username.setText("admin");
-
-        tx_password.setText("admin");
+        tx_password.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tx_passwordActionPerformed(evt);
+            }
+        });
         tx_password.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 tx_passwordKeyPressed(evt);
@@ -349,6 +351,10 @@ public class LoginForm extends javax.swing.JFrame implements inReceiveMessage{
         // TODO add your handling code here:
       
     }//GEN-LAST:event_bt_register1MouseClicked
+
+    private void tx_passwordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tx_passwordActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tx_passwordActionPerformed
 
     
     /**

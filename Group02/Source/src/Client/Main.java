@@ -47,10 +47,11 @@ public class Main extends javax.swing.JFrame implements inReceiveMessage{
     int GameState = 0;
     static final int WAIT = 0;
     static final int MY_TURN = 1;
-    static final int YOU_WIN = 3;
-    static final int YOU_LOSE = -1;
+    static final int YOU_WIN = 2;
+    static final int YOU_LOSE = 3;
     /**
      * Creates new form Main
+     * @param listenServer
      */
     public Main(ListenServer listenServer) {
         initComponents();
@@ -452,7 +453,6 @@ public class Main extends javax.swing.JFrame implements inReceiveMessage{
     
     @Override
         public void ReceiveMessage(KMessage msg) throws IOException {
-            System.out.println(msg.getType());
             switch (msg.getType()) {
                 case 30: // get ban co
                 {

@@ -128,12 +128,12 @@ public class Room implements Serializable{
         int sum = client.user.getScore();
         if (isWin)
         {
-            sum+=100;
+            sum+=3;
             client.user.setWin(client.user.getWin()+1);
         }
         else
         {
-            sum-=100;
+            sum-=1;
             client.user.setLose(client.user.getLose()+1);
         }
         client.user.setScore(sum);

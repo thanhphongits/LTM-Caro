@@ -75,7 +75,6 @@ public class ClientHandler extends Thread {
         }
 
         void ReceiveMessage(KMessage msg) throws IOException {
-            System.out.println(msg.getType());
             switch (msg.getType()) {
                 case 0: {
                     Users temp = (Users)msg.getObject();
@@ -83,7 +82,6 @@ public class ClientHandler extends Thread {
                     user = df.checkLogin(temp.getUsername(), temp.getPassword());
                     if(user != null)
                     {
-                        Boolean flag = true;
                         // Kiem tra coi da co ai dang nhap hay chua
                         for (ClientHandler cli : Main.lstClient) {
                             if (cli!=this && cli.user!=null && cli.user.getUsername().equalsIgnoreCase(user.getUsername()))
