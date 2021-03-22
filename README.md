@@ -1,3 +1,3 @@
 ﻿# Lập Trình Mạng
- # Đồ án:  Cờ Caro
-# Nguyễn Võ Lam Giang
+ # Cờ Caro
+# Cố gắn lên mọi người ơi !

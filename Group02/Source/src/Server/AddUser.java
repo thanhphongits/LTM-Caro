@@ -10,7 +10,7 @@ import javax.swing.JOptionPane;
 
 /**
  *
- * @author Nhan Nguyen
+ * @author In Lưu
  */
 public class AddUser extends javax.swing.JFrame {
 

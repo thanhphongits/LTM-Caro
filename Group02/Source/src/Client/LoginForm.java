@@ -417,6 +417,7 @@ public class LoginForm extends javax.swing.JFrame implements inReceiveMessage{
 
     @Override
     public void ReceiveMessage(KMessage msg) throws IOException {
+        System.out.println(msg.getType());
         switch (msg.getType()) {
             case 0: {
                 user = (Users) msg.getObject();

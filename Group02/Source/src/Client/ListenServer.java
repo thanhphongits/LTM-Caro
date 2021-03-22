@@ -21,7 +21,7 @@ import javax.crypto.SealedObject;
 
 /**
  *
- * @author Nguyen Cao Ky
+ * @author ASUS
  */
 class ListenServer extends Thread {
         Socket socket;

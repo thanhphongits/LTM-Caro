@@ -16,7 +16,7 @@ import java.util.logging.Logger;
 
 /**
  *
- * @author Nguyen Cao Ky
+ * @author 
  */
 public class Room implements Serializable{
     int id = 0;

@@ -9,7 +9,7 @@ import java.io.IOException;
 
 /**
  *
- * @author Nguyen Cao Ky
+ * @author ASUS
  */
 public interface inReceiveMessage {
     

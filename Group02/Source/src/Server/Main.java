@@ -20,7 +20,7 @@ import javax.swing.JOptionPane;
 
 /**
  *
- * @author Nguyen Cao Ky
+ * @author In Lưu
  */
 public class Main extends javax.swing.JFrame {
 

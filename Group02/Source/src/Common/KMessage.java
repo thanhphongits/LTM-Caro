@@ -8,7 +8,7 @@ import java.io.Serializable;
 
 /**
  *
- * @author Nguyen Cao Ky
+ * @author 
  */
 public class KMessage implements Serializable{
     private int type;

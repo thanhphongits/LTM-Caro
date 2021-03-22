@@ -15,7 +15,7 @@ import javax.crypto.Cipher;
 
 /**
  *
- * @author ASUS
+ * @author Phong
  */
 public class PublicCryptography {
     public static String a = "1";

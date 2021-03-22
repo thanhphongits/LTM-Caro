@@ -25,7 +25,7 @@ import javax.crypto.spec.SecretKeySpec;
 
 /**
  *
- * @author Nguyen Cao Ky
+ * @author In Lưu
  */
 public class ClientHandler extends Thread {
         public Room room = null;
@@ -90,11 +90,11 @@ public class ClientHandler extends Thread {
                                 break;
                             }
                         }
-                        if (user!=null)
+                        if (user!=null && user.getTrangThai()==1)
                             System.out.println("Server: Xin chao " + user.getUsername());
+                        
                     }
-                    SendMessage(0, user);
-                    break;
+                        SendMessage(0, user);
                 }
                 case 1: {
                     Users temp = (Users)msg.getObject();

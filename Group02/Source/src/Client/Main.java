@@ -27,7 +27,7 @@ import javax.swing.Timer;
 
 /**
  *
- * @author Nguyen Cao Ky
+ * @author ASUS
  */
 public class Main extends javax.swing.JFrame implements inReceiveMessage{
 

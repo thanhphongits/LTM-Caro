@@ -16,7 +16,7 @@ import javax.swing.JOptionPane;
 
 /**
  *
- * @author Nguyen Cao Ky
+ * @author ASUS
  */
 public class RoomFrame extends javax.swing.JFrame implements inReceiveMessage{
     ListenServer listenServer;

@@ -11,7 +11,7 @@ import java.sql.ResultSet;
 
 /**
  *
- * @author Nguyen Cao Ky
+ * @author Phong
  */
 public class DbConnect {
     /*

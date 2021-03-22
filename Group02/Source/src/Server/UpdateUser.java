@@ -14,7 +14,7 @@ import javax.swing.JOptionPane;
 
 /**
  *
- * @author Nhan Nguyen
+ * @author In Lưu
  */
 public class UpdateUser extends javax.swing.JFrame {
 

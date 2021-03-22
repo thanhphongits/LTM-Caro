@@ -16,7 +16,7 @@ import javax.swing.JPanel;
 
 /**
  *
- * @author Thi
+ * @author ASUS
  */
 public class JGoban extends JPanel {
 

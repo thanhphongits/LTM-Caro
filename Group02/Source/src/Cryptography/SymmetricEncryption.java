@@ -17,7 +17,7 @@ import java.util.Base64;
 
 /**
  *
- * @author ASUS
+ * @author Phong
  */
 public class SymmetricEncryption{
     private byte[] iv;
